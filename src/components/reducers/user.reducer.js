@@ -27,13 +27,8 @@ const initialState = {
     mobileno: "",
     email: "",
     token: localStorage.getItem('authtoken'),
-    txs: [{
-        to: "",
-        from: "",
-        amount: "",
-        txid: "",
-        txat: ""
-    }],
+    txs: [],
+    txsloaded: false,
     usersto: [],
 }
 
@@ -146,7 +141,8 @@ const userops = (state = initialState, action) => {
         case NEW_TRANSACTION_INITIATED: {
             state = {
                 ...state,
-                initiated: "true"
+                initiated: "true",
+                txsloaded: false,
             }
             return state;
         }
@@ -159,6 +155,12 @@ const userops = (state = initialState, action) => {
             return state;
         }
         case NEW_TRANSACTION_SUCCESS: {
+
+            state = {
+                ...state,
+                txs: action.payload.txs,
+                txsloaded: true
+            }
 
             return state;
         }

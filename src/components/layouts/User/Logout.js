@@ -16,7 +16,7 @@ class Logout extends React.Component {
        // console.log(this.props.loggedin);
         this.props.logout();
 
-        return (<Redirect to="/" />)
+        return (<Redirect to="/login" />)
 
     }
 }

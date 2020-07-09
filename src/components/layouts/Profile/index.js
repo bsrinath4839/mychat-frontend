@@ -30,7 +30,7 @@ class Profile extends React.Component {
     }
 
     render() {
-        //console.log("mobile",this.props.mobileno);
+        // console.log("txs",this.props.txs);
 
         if (this.props.loggedin === "true") {
             if (this.props.mobileno === "") {
@@ -74,16 +74,41 @@ class Profile extends React.Component {
                             <p>
                                 You don't have any transactions...!!
                             </p> :
-                            <table>
-                                <caption>Transactions Details</caption>
+                            <table width="80%">
+                                <caption>Transactions Details : RECIEVED</caption>
                                 <tbody>
+                                    <tr>
+                                        <td>S.No</td>
+                                        <th> : </th>
+                                        <td>NAME</td>
+                                        <td>MOBILE No.</td>
+                                        <td>SENT To </td>
+                                        <td>RECIEVED From </td>
+                                        <td>Date of Tx</td>
+                                    </tr>
+
                                     {this.props.txs.map((tx, index) => (
-                                        <tr key={index}>
-                                            <td>{index}</td>
-                                            <th>:</th>
-                                            <td>{tx.to} </td>
-                                            <td>{tx.amount}</td>
-                                        </tr>
+                                        tx.from === null ?
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <th>:</th>
+                                                <td>{tx.to.name} </td>
+                                                <td>{tx.to.mobileno}</td>
+                                                <td>{tx.amount}</td>
+                                                <td> - </td>
+                                                <td>{tx.txat}</td>
+                                            </tr>
+                                            :
+
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <th>:</th>
+                                                <td>{tx.from.name} </td>
+                                                <td>{tx.from.mobileno}</td>
+                                                <td> - </td>
+                                                <td>{tx.amount}</td>
+                                                <td>{tx.txat}</td>
+                                            </tr>
                                     ))}
                                 </tbody>
                             </table>

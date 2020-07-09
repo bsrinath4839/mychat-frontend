@@ -12,6 +12,9 @@ import {
     LOAD_USERSTO_INITIATED,
     LOAD_USERSTO_SUCCESS,
     LOGOUT_USER,
+    NEW_TRANSACTION_FAILED,
+    NEW_TRANSACTION_INITIATED,
+    NEW_TRANSACTION_SUCCESS,
 } from '../../types';
 
 
@@ -107,6 +110,8 @@ export const userlogin = (email, mobileno, password) => async (dispatch, getStat
 }
 
 export const loaduser = (token) => async (dispatch, getState) => {
+    // console.log(getState().user);
+
     const url = "http://192.168.43.57:8080/loaduser"
 
     const header = {
@@ -136,7 +141,7 @@ export const loaduser = (token) => async (dispatch, getState) => {
         }
     }).then((data) => {
         if (data) {
-            // console.log('data',data);
+            console.log('data', data);
 
             dispatch({
                 type: LOAD_USER_SUCCESS,
@@ -206,5 +211,58 @@ export const searchUserForTo = (mobileno) => async (dispatch, getState) => {
 export const logout = () => async (dispatch, getState) => {
     dispatch({
         type: LOGOUT_USER
+    })
+}
+
+
+export const newTx = (amount, sendto) => async (dispatch, getState) => {
+    // console.log(getState().user);
+    // console.log(amount, sendto);
+
+
+    let url = "http://192.168.43.57:8080/newtx";
+
+    const header = {
+        'Content-Type': 'application/json',
+        'authtoken': getState().user.token
+    }
+
+    let body = {
+        amount: amount,
+        to: sendto,
+    }
+
+    dispatch({
+        type: NEW_TRANSACTION_INITIATED
+    })
+
+    fetch(url, {
+        method: "POST",
+        headers: header,
+        body: JSON.stringify(body)
+    }).then((response) => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            dispatch({
+                type: NEW_TRANSACTION_FAILED
+            })
+        }
+    }).then((data) => {
+        if (data) {
+            console.log("txs", data);
+
+            dispatch({
+                type: NEW_TRANSACTION_SUCCESS,
+                payload: data.result
+            })
+        }
+    })
+
+}
+
+export const newTxInt = () => async (dispatch, getState) => {
+    dispatch({
+        type: NEW_TRANSACTION_INITIATED
     })
 }

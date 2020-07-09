@@ -113,6 +113,10 @@ class Login extends React.Component {
             return (
                 <Redirect to="/user" />
             )
+        }else{
+            return(
+                <Redirect to="/" />
+            )
         }
     }
 
